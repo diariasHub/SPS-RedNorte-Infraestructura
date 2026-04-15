@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  # -----------------------------------------------------------
+  # 1. BASE DE DATOS CENTRAL COMPARTIDA (PostgreSQL)
+  # -----------------------------------------------------------
+  postgres:
+    image: postgres:15-alpine
+    container_name: rednorte-postgres
+    restart: always
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - rednorte-network
+
+  # -----------------------------------------------------------
+  # 2. CAPA CENTRAL DEL MODELO CLÍNICO (HAPI FHIR Server)
+  # -----------------------------------------------------------
+  hapi-fhir:
+    image: hapiproject/hapi-fhir-jpaserver-starter:latest
+    container_name: rednorte-hapi-fhir
+    restart: on-failure
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/hapi_fhir
+      - SPRING_DATASOURCE_USERNAME=${DB_USER}
+      - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
+      - HAPI_FHIR_TESTER_HOME_SERVER_ADDRESS=http://localhost:8080/fhir
+    depends_on:
+      - postgres
+    networks:
+      - rednorte-network
+
+  # -----------------------------------------------------------
+  # 3. TUS MICROSERVICIOS DE NEGOCIO (Ej: MS-Agenda) SOLO DE EJEMPLO SE DEBEN CAMBIAR LOS NOMBRES SEGUN SE AGREGEN MICROSERVICIOS
+  # -----------------------------------------------------------
+  ms-agenda:
+    # Usamos la etiqueta :local asumiendo que la compilarás primero en tu PC
+    image: rednorte-ms-agenda:local
+    container_name: rednorte-ms-agenda  ## Cambia el nombre del contenedor según el microservicio
+    ports:
+      - "8082:8080" # Expone el MS-Agenda en el puerto 8082
+    environment:
+      # URL interna para que Spring Boot hable con HAPI FHIR
+      - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+    depends_on:
+      - hapi-fhir
+    networks:
+      - rednorte-network
+
+# -----------------------------------------------------------
+# VOLÚMENES Y REDES
+# -----------------------------------------------------------
+volumes:
+  postgres_data: # Hace que los datos sobrevivan aunque apagues el contenedor
+
+networks:
+  rednorte-network:
+    driver: bridge
