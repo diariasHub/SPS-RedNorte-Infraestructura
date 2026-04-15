@@ -5,7 +5,7 @@ Este repositorio contiene la orquestación (Docker Compose) de la plataforma Red
 | Módulo / Servicio | Descripción | Repositorio |
 | :--- | :--- | :--- |
 | 🌐 **Frontend** | Portal de pacientes y administrativos (React) | [Ir al código]() |
-| 🛡️ **API Gateway** | Enrutamiento y validación JWT | [Ir al código]() |
+| 🛡️ **API Gateway** | Enrutamiento y validación JWT | [[Ir al código](https://github.com/diariasHub/SPS-rednorte-api-gateway)]() |
 | 👤 **MS Usuarios** | Gestión de pacientes y médicos (FHIR Patient,Practitioner) | [Ir al código]() |
 | 🏥 **MS Centros** | Administración de ubicaciones (FHIR Organization,Location) | [Ir al código]() |
 | 📅 **MS Agenda-profesional** | Gestión de bloques de tiempo (FHIR Schedule,Slot) | [Ir al código]() |
