@@ -1,4 +1,3 @@
-version: '3.8'
 
 services:
   # -----------------------------------------------------------
@@ -23,7 +22,7 @@ services:
   # 2. CAPA CENTRAL DEL MODELO CLÍNICO (HAPI FHIR Server)
   # -----------------------------------------------------------
   hapi-fhir:
-    image: hapiproject/hapi-fhir-jpaserver-starter:latest
+    image: hapiproject/hapi:latest
     container_name: rednorte-hapi-fhir
     restart: on-failure
     ports:
@@ -43,19 +42,18 @@ services:
   # -----------------------------------------------------------
   # 3. TUS MICROSERVICIOS DE NEGOCIO (Ej: MS-Agenda) SOLO DE EJEMPLO SE DEBEN CAMBIAR LOS NOMBRES SEGUN SE AGREGEN MICROSERVICIOS
   # -----------------------------------------------------------
-  ms-agenda:
-    # Usamos la etiqueta :local asumiendo que la compilarás primero en tu PC
-    image: rednorte-ms-agenda:local
-    container_name: rednorte-ms-agenda  ## Cambia el nombre del contenedor según el microservicio
+  ms-red-centros:
+    image: rednorte-ms-centros:local
+    container_name: rednorte-ms-centros
     ports:
-      - "8082:8080" # Expone el MS-Agenda en el puerto 8082
+      - "8081:8080"
     environment:
-      # URL interna para que Spring Boot hable con HAPI FHIR
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
     depends_on:
       - hapi-fhir
     networks:
       - rednorte-network
+
 
 # -----------------------------------------------------------
 # VOLÚMENES Y REDES
