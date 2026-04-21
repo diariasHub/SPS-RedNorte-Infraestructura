@@ -43,10 +43,23 @@ services:
   # 3. TUS MICROSERVICIOS DE NEGOCIO (Ej: MS-Agenda) SOLO DE EJEMPLO SE DEBEN CAMBIAR LOS NOMBRES SEGUN SE AGREGEN MICROSERVICIOS
   # -----------------------------------------------------------
   ms-red-centros:
+    build: ../SPS-ms-red-centros
     image: rednorte-ms-centros:local
     container_name: rednorte-ms-centros
     ports:
       - "8081:8080"
+    environment:
+      - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+    depends_on:
+      - hapi-fhir
+    networks:
+      - rednorte-network
+  ms-agenda:
+    build: ../ms-agenda-profesional       
+    image: ms-agenda-profesional:local
+    container_name: ms-agenda-profesional
+    ports:
+      - "8082:8080"                       
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
     depends_on:
