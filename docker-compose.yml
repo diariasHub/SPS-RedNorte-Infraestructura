@@ -66,6 +66,26 @@ services:
       - hapi-fhir
     networks:
       - rednorte-network
+  ms-ficha-clinica:
+    build: ../SPS-ms-ficha-clinica       
+    image: ms-ficha-clinica:local
+    container_name: ms-ficha-clinica
+    ports:
+      - "8083:8001"                       
+    environment:
+      - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      # --- VARIABLES AGREGADAS PARA CONECTAR A POSTGRES ---
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    depends_on:
+      - hapi-fhir
+      - postgres
+    networks:
+      - rednorte-network
 
 
 # -----------------------------------------------------------
