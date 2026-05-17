@@ -25,7 +25,7 @@ services:
     container_name: rednorte-hapi-fhir
     restart: on-failure
     ports:
-      - "8080:8080"
+      - "8085:8080"
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/hapi_fhir
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
@@ -83,6 +83,32 @@ services:
     depends_on:
       - hapi-fhir
       - postgres
+    networks:
+      - rednorte-network
+  ms-urgencias-flujo:
+    build: ../ms-urgencias-flujo
+    image: ms-urgencias-flujo:local
+    container_name: ms-urgencias-flujo
+    ports:
+      - "8084:8080"
+    environment:
+      - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+    depends_on:
+      - hapi-fhir
+    networks:
+      - rednorte-network
+  ms-api-gateway:
+    build: ../SPS-rednorte-api-gateway
+    image: ms-api-gateway:local
+    container_name: ms-api-gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - hapi-fhir
+      - ms-agenda
+      - ms-ficha-clinica
+      - ms-red-centros
+      - ms-urgencias-flujo
     networks:
       - rednorte-network
 
