@@ -85,7 +85,22 @@ services:
       - postgres
     networks:
       - rednorte-network
+  ms-usuarios-identidad:
+    restart: always
+    build: ../SPS-ms-usuarios-identidad/ms-usuarios
+    image: ms-usuarios-identidad:local
+    container_name: ms-usuarios-identidad
+    ports:
+      - "8086:8080"
+    environment:
+      - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+    depends_on:
+      - hapi-fhir
+    networks:
+      - rednorte-network
+
   ms-urgencias-flujo:
+    restart: always
     build: ../ms-urgencias-flujo
     image: ms-urgencias-flujo:local
     container_name: ms-urgencias-flujo
@@ -97,7 +112,9 @@ services:
       - hapi-fhir
     networks:
       - rednorte-network
+
   ms-api-gateway:
+    restart: always
     build: ../SPS-rednorte-api-gateway
     image: ms-api-gateway:local
     container_name: ms-api-gateway
@@ -109,6 +126,17 @@ services:
       - ms-ficha-clinica
       - ms-red-centros
       - ms-urgencias-flujo
+    networks:
+      - rednorte-network
+  ms-rednorte-front:
+    restart: always
+    build: ../SPS-rednorte-front/frontend
+    image: ms-rednorte-front:local
+    container_name: ms-rednorte-front
+    ports:
+      - "3000:80"
+    depends_on:
+      - ms-api-gateway
     networks:
       - rednorte-network
 
