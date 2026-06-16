@@ -6,7 +6,7 @@ Este repositorio contiene la orquestación (Docker Compose) de la plataforma Red
 | :--- | :--- | :--- |
 | 🌐 **Frontend** | Portal de pacientes y administrativos (React) | [Ir al código]() |
 | 🛡️ **API Gateway** | Enrutamiento y validación JWT | [Ir al código](https://github.com/diariasHub/SPS-rednorte-api-gateway) |
- **Service Discovery** | trabajando | [Ir al código]([https://github.com/diariasHub/SPS-rednorte-api-gateway]) |
+ **Service Discovery** | trabajando | [Ir al código]((https://github.com/diariasHub/SPS-ms-service-discovery)) |
 | 👤 **MS Login-user** | Microservicio dedicado exclusivamente a la autenticación e inicio de sesión de usuarios, garantizando el acceso seguro a la plataforma del sistema ERP. | [Ir al código](https://github.com/diariasHub/SPS-ms-usuarios-identidad.git) |
 | 👤 **MS Paciente** | Microservicio encargado de la gestión integral de pacientes, implementando el estándar de interoperabilidad HL7 FHIR (recurso Patient). | [Ir al código](https://github.com/diariasHub/SPS-ms-usuarios-identidad.git) |
 | 👤 **MS Usuarios** | Microservicio de usuarios y personal médico (FHIR Practitioner) | [Ir al código](https://github.com/Blacknight3648/SPS-ms-usuarios) |
