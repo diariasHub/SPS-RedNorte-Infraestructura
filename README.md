@@ -4,7 +4,7 @@ Este repositorio contiene la orquestación (Docker Compose) de la plataforma Red
 
 | Módulo / Servicio | Descripción | Repositorio |
 | :--- | :--- | :--- |
-| 🌐 **Frontend** | Portal de pacientes y administrativos (React) | [Ir al código]() |
+| 🌐 **Frontend** | Portal de pacientes y administrativos (React) | [Ir al código](https://github.com/diariasHub/SPS-rednorte-frontend) |
 | 🛡️ **API Gateway** | Enrutamiento y validación JWT | [Ir al código](https://github.com/diariasHub/SPS-rednorte-api-gateway) |
 | **Service Discovery** | trabajando | [Ir al código](https://github.com/diariasHub/SPS-ms-service-discovery) |
 | 👤 **MS Login-user** | Microservicio dedicado exclusivamente a la autenticación e inicio de sesión de usuarios, garantizando el acceso seguro a la plataforma del sistema ERP. | [Ir al código](https://github.com/diariasHub/SPS-ms-usuarios-identidad.git) |
