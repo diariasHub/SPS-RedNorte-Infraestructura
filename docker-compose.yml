@@ -39,6 +39,20 @@ services:
       - rednorte-network
 
   # -----------------------------------------------------------
+  # 2.5. SERVICIO DE DESCUBRIMIENTO (Eureka Server)
+  # -----------------------------------------------------------
+  ms-service-discovery:
+    build: ../SPS-ms-service-discovery
+    image: ms-service-discovery:local
+    container_name: ms-service-discovery
+    ports:
+      - "8761:8761"
+    environment:
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
+    networks:
+      - rednorte-network
+
+  # -----------------------------------------------------------
   # 3. TUS MICROSERVICIOS DE NEGOCIO (Ej: MS-Agenda) SOLO DE EJEMPLO SE DEBEN CAMBIAR LOS NOMBRES SEGUN SE AGREGEN MICROSERVICIOS
   # -----------------------------------------------------------
   ms-red-centros:
@@ -49,6 +63,7 @@ services:
       - "8081:8080"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
     depends_on:
       - hapi-fhir
     networks:
@@ -61,6 +76,7 @@ services:
       - "8082:8080"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
     depends_on:
       - hapi-fhir
     networks:
@@ -80,6 +96,7 @@ services:
       - SPRING_DATASOURCE_DRIVERCLASSNAME=org.postgresql.Driver
       - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.PostgreSQLDialect
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
     depends_on:
       - hapi-fhir
       - postgres
@@ -102,7 +119,7 @@ services:
 
   ms-usuarios:
     restart: always
-    build: ../SPS-ms-usuarios
+    build: ../SPS-ms-usuarios/ms-usuarios
     image: ms-usuarios:local
     container_name: ms-usuarios
     ports:
@@ -116,13 +133,14 @@ services:
 
   ms-pacientes:
     restart: always
-    build: ../ms-pacientes
+    build: ../ms-pacientes/ms-paciente
     image: ms-pacientes:local
     container_name: ms-pacientes
     ports:
       - "8088:8080"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      - SPRING_PROFILES_ACTIVE=dev-h2
     depends_on:
       - hapi-fhir
     networks:
@@ -137,6 +155,7 @@ services:
       - "8084:8080"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
     depends_on:
       - hapi-fhir
     networks:
@@ -149,12 +168,15 @@ services:
     container_name: ms-api-gateway
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_CLOUD_COMPATIBILITY_VERIFIER_ENABLED=false
     depends_on:
       - hapi-fhir
       - ms-agenda
       - ms-ficha-clinica
       - ms-red-centros
       - ms-urgencias-flujo
+      - ms-service-discovery
     networks:
       - rednorte-network
   ms-rednorte-front:
