@@ -181,7 +181,7 @@ services:
       - rednorte-network
   ms-rednorte-front:
     restart: always
-    build: ../SPS-rednorte-front/frontend
+    build: ../SPS-rednorte-frontend
     image: ms-rednorte-front:local
     container_name: ms-rednorte-front
     ports:
