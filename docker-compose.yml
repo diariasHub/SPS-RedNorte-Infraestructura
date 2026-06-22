@@ -14,6 +14,7 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
     networks:
       - rednorte-network
 
@@ -109,7 +110,7 @@ services:
     image: ms-login-user:local
     container_name: ms-login-user
     ports:
-      - "8087:8080"
+      - "8087:8087"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
     depends_on:
@@ -123,24 +124,32 @@ services:
     image: ms-usuarios:local
     container_name: ms-usuarios
     ports:
-      - "8086:8080"
+      - "8086:8086"
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
+      - SPRING_PROFILES_ACTIVE=dev
+      - DB_URL=jdbc:postgresql://postgres:5432/${POSTGRES_DB}
+      - DB_USER=${POSTGRES_USER}
+      - DB_PASSWORD=${POSTGRES_PASSWORD}
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - APP_JWT_JWK_SET_URI=http://ms-login-user:8080/.well-known/jwks.json
     depends_on:
       - hapi-fhir
+      - postgres
     networks:
       - rednorte-network
 
-  ms-pacientes:
+  ms-paciente:
     restart: always
-    build: ../ms-pacientes/ms-paciente
+    build: ../sps-ms-paciente/ms-paciente
     image: ms-pacientes:local
     container_name: ms-pacientes
     ports:
-      - "8088:8080"
+      - "8088:8002"   # la app corre en el puerto 8002 internamente
     environment:
       - FHIR_SERVER_URL=http://hapi-fhir:8080/fhir
       - SPRING_PROFILES_ACTIVE=dev-h2
+      - APP_JWT_JWK_SET_URI=http://ms-login-user:8080/.well-known/jwks.json
     depends_on:
       - hapi-fhir
     networks:
