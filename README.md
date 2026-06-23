@@ -16,7 +16,7 @@ Este repositorio contiene la orquestación (Docker Compose) de la plataforma Red
 | 🚑 **MS urgencias-flujo** |  Control de la sala de espera dinámica y el triaje (C1-C5) (FHIR Encounter) | [Ir al código](https://github.com/diariasHub/ms-urgencias-flujo.git) |
 | 🚑 **MS ficha-clinica** | Registro de datos médicos durante la atención. (FHIR: Observation) | [Ir al código](https://github.com/diariasHub/SPS-ms-ficha-clinica.git) |
 | 🚑 **MS notificaciones** |  Sistema asíncrono para enviar alertas y confirmaciones (SMS, correos) (FHIR: Communication) | [Ir al código](https://github.com/diariasHub/SPS-ms-notificaciones.git) |
-|**Deployment mono repo**| |repositorio monolitico de deployment para prueba en aws | [Ir al código](https://github.com/diariasHub/Rednorte-deploy-mono.git)
+|**Deployment mono repo**| |repositorio monolitico de deployment para prueba en aws | [Ir al código](https://github.com/diariasHub/Rednorte-deploy-mono.git) |
 > **Nota:** Todos los microservicios se comunican con un servidor central **HAPI FHIR** y una base de datos **PostgreSQL** compartida, configurada en este mismo repositorio.
 
 
